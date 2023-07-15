@@ -11,7 +11,7 @@ Template for Django/Sveltekit stack
 |----------------------------|--------------------------------------|------------------------------|
 | `DJANGO_SECRET_KEY`        | get_random_secret_key()              |                              |
 | `DJANGO_DEBUG`             | True                                 |                              |
-| `FRONTEND_HOST`            | `http://localhost:5173/`             |                              |
+| `FRONTEND_HOST`            | `http://localhost:5173`              |                              |
 | `DJANGO_CORS_ORIGINS`      | [`FRONTEND_HOST`]                    | Hosts are separated by comma |
 | `DJANGO_ALLOWED_HOSTS`     | []                                   | Hosts are separated by comma |
 | `DJANGO_ACTIVATION_URL`    | 'api/v1/auth/activate/{uid}/{token}' | Used for register activation |

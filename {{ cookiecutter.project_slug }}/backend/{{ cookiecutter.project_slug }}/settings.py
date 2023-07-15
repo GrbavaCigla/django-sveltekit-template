@@ -182,6 +182,6 @@ DJOSER = {
     'ACTIVATION_URL': environ.get('DJANGO_ACTIVATION_URL', 'api/v1/auth/activate/{uid}/{token}/'),
 }
 
-FRONTEND_HOST = environ.get('DJANGO_FRONTEND_HOST', 'http://localhost:5173/')
+FRONTEND_HOST = environ.get('DJANGO_FRONTEND_HOST', 'http://localhost:5173')
 
 CORS_ALLOWED_ORIGINS = environ.get('DJANGO_CORS_ORIGINS', FRONTEND_HOST).split(',')
