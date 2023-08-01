@@ -1,0 +1,32 @@
+services:
+  db: 
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=bla
+      - POSTGRES_PASSWORD=bla
+      - POSTGRES_DB=bla
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+  backend:
+    build: backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/mediafiles
+    depends_on:
+      - db
+  nginx:
+    build: nginx
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/mediafiles
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
