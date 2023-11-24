@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     "djoser",
     "corsheaders",
     "drf_spectacular",
-    "api",
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -147,17 +147,10 @@ MEDIA_URL = "media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Email SMTP configuration
+CORS_ALLOW_ALL_ORIGINS = DEBUG
+CORS_ALLOWED_ORIGINS = environ.get("DJANGO_CORS_URLS", "").split(",")
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = environ.get("DJANGO_EMAIL_USER")
-EMAIL_HOST = environ.get("DJANGO_EMAIL_HOST")
-EMAIL_PORT = int(environ.get("DJANGO_EMAIL_PORT", 587))
-EMAIL_HOST_USER = environ.get("DJANGO_EMAIL_USER")
-EMAIL_HOST_PASSWORD = environ.get("DJANGO_EMAIL_PASSWORD")
-
-AUTH_USER_MODEL = "api.User"
+AUTH_USER_MODEL = "core.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
@@ -171,10 +164,20 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 100,
 }
 
+# Email SMTP configuration
+DEFAULT_FROM_EMAIL = environ.get("DJANGO_EMAIL_USER")
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS = True
+EMAIL_HOST = environ.get("DJANGO_EMAIL_HOST")
+EMAIL_PORT = int(environ.get("DJANGO_EMAIL_PORT", 587))
+EMAIL_HOST_USER = environ.get("DJANGO_EMAIL_USER")
+EMAIL_HOST_PASSWORD = environ.get("DJANGO_EMAIL_PASSWORD")
+
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": "Bearer",
 }
 
+DELETE_USERNAME = True
 
 DJOSER = {
     "HIDE_USERS": True,
@@ -186,8 +189,9 @@ DJOSER = {
     "ACTIVATION_URL": environ.get(
         "DJANGO_ACTIVATION_URL", "api/v1/auth/activate/{uid}/{token}/"
     ),
+    "LOGIN_FIELD": "email" if DELETE_USERNAME else "username",
+    # "SERIALIZERS": {"current_user": "api.serializers.CustomUserSerializer"},
 }
 
-FRONTEND_HOST = environ.get("DJANGO_FRONTEND_HOST", "http://localhost:5173")
+ACTIVATION_REDIRECT = environ.get("DJANGO_ACTIVATION_REDIRECT", "")
 
-CORS_ALLOWED_ORIGINS = environ.get("DJANGO_CORS_ORIGINS", FRONTEND_HOST).split(",")

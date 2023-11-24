@@ -4,7 +4,6 @@ from django.conf import settings
 from django.shortcuts import redirect
 
 from rest_framework.views import APIView, Response
-from rest_framework.viewsets import ModelViewSet
 
 
 class UserActivation(APIView):
@@ -15,6 +14,6 @@ class UserActivation(APIView):
         response = requests.post(url, data=payload)
 
         if response.ok:
-            return redirect(settings.FRONTEND_HOST)
+            return redirect(settings.ACTIVATION_REDIRECT)
 
         return Response(response.content)
