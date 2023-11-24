@@ -12,15 +12,15 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - static_volume:/app/staticfiles
-      - media_volume:/app/mediafiles
+      - static_volume:/app/static
+      - media_volume:/app/media
     depends_on:
       - db
   nginx:
     build: nginx
     volumes:
-      - static_volume:/app/staticfiles
-      - media_volume:/app/mediafiles
+      - static_volume:/app/static
+      - media_volume:/app/media
     ports:
       - "80:80"
     depends_on:
