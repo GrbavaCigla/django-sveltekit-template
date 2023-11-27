@@ -11,15 +11,14 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-from os import environ
+from os import environ, path
 from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
-
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(path.join(BASE_DIR.parent, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -30,7 +29,7 @@ SECRET_KEY = environ.get("DJANGO_SECRET_KEY", get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.get("DJANGO_DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
+ALLOWED_HOSTS = [i for i in environ.get("DJANGO_ALLOWED_HOSTS", "").split(",") if i]
 
 
 # Application definition
@@ -48,6 +47,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "drf_spectacular",
     "core",
+    "user",
 ]
 
 MIDDLEWARE = [
@@ -148,9 +148,9 @@ MEDIA_URL = "media/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOW_ALL_ORIGINS = DEBUG
-CORS_ALLOWED_ORIGINS = environ.get("DJANGO_CORS_URLS", "").split(",")
+CORS_ALLOWED_ORIGINS = [i for i in environ.get("CORS_ALLOWED_ORIGINS", "").split(",") if i]
 
-AUTH_USER_MODEL = "core.User"
+AUTH_USER_MODEL = "user.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
@@ -177,7 +177,7 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": "Bearer",
 }
 
-DELETE_USERNAME = True
+DELETE_USERNAME = False
 
 DJOSER = {
     "HIDE_USERS": True,
