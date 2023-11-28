@@ -1,0 +1,21 @@
+---
+- name: Create server user
+  user:
+    name: "{{ "{{" }} server_user {{ "}}" }}"
+    groups: wheel,users
+
+- tempfile:
+    state: file
+    suffix: pub
+  register: ssh_key
+
+- copy:
+    src: "{{ "{{" }} ssh_key_path {{ "}}" }}"
+    dest: "{{ "{{" }} ssh_key.path {{ "}}" }}"
+
+- name: Add authorized keys
+  become: true
+  become_user: "{{ "{{" }} server_user {{ "}}" }}"
+  ansible.posix.authorized_key:
+    user: "{{ "{{" }} server_user {{ "}}" }}"
+    key: "{{ "{{" }} lookup(\"file\", ssh_key.path) {{ "}}" }}"
