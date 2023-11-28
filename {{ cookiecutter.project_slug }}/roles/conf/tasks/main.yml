@@ -4,18 +4,14 @@
     name: "{{ "{{" }} server_user {{ "}}" }}"
     groups: wheel,users
 
-- tempfile:
-    state: file
-    suffix: pub
-  register: ssh_key
-
-- copy:
-    src: "{{ "{{" }} ssh_key_path {{ "}}" }}"
-    dest: "{{ "{{" }} ssh_key.path {{ "}}" }}"
-
 - name: Add authorized keys
   become: true
   become_user: "{{ "{{" }} server_user {{ "}}" }}"
   ansible.posix.authorized_key:
     user: "{{ "{{" }} server_user {{ "}}" }}"
-    key: "{{ "{{" }} lookup(\"file\", ssh_key.path) {{ "}}" }}"
+    key: "{{ "{{" }} lookup(\"file\", ssh_key_path) {{ "}}" }}"
+
+- name: Secure ssh
+  template:
+    src: 90-security.conf.j2
+    dest: /etc/ssh/sshd_config.d/90-security.conf
