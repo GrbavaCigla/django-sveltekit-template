@@ -1,0 +1,7 @@
+---
+- hosts: all
+  vars:
+    server_user: admin
+  roles:
+    - conf
+    - project

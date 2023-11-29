@@ -1,0 +1,11 @@
+- getent:
+    database: passwd
+    key: "{{ "{{" }} server_user {{ "}}" }}"
+
+- name: Clone project
+  become: true
+  become_user: "{{ "{{" }} server_user {{ "}}" }}"
+  ansible.builtin.git:
+    repo: "{{ "{{" }} git_url {{ "}}" }}"
+    dest: "{{ "{{" }} getent_passwd[server_user][4] {{ "}}" }}/project"
+

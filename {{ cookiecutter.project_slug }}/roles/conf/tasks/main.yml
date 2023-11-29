@@ -15,3 +15,9 @@
   template:
     src: 90-security.conf.j2
     dest: /etc/ssh/sshd_config.d/90-security.conf
+
+- name: Install packages
+  ansible.builtin.dnf:
+    name: "{{ "{{" }} item {{ "}}" }}"
+    state: present
+  loop: "{{ "{{" }} packages {{ "}}" }}"
