@@ -3,3 +3,4 @@ ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa.pub"
 packages:
   - git
   - python3
+  - poetry

@@ -2,10 +2,31 @@
     database: passwd
     key: "{{ server_user }}"
 
+- set_fact:
+    project_root: "{{ getent_passwd[server_user][4] }}/project"
+
 - name: Clone project
   become: true
   become_user: "{{ server_user }}"
   ansible.builtin.git:
     repo: "{{ git_url }}"
-    dest: "{{ getent_passwd[server_user][4] }}/project"
+    dest: "{{ project_root }}"
+
+- name: Create venv
+  ansible.builtin.command:
+    args:
+      - poetry
+      - env
+      - use
+      - python
+  register: venv
+
+- debug:
+    msg: "{{ venv }}"
+
+- name: Migrate backend
+  community.general.django_manage:
+    command: migrate
+    project_path: "{{ project_root }}/backend/"
+
 
