@@ -1,15 +1,15 @@
 ---
 - name: Create server user
   user:
-    name: "{{ "{{" }} server_user {{ "}}" }}"
+    name: "{{ server_user }}"
     groups: wheel,users
 
 - name: Add authorized keys
   become: true
-  become_user: "{{ "{{" }} server_user {{ "}}" }}"
+  become_user: "{{ server_user }}"
   ansible.posix.authorized_key:
-    user: "{{ "{{" }} server_user {{ "}}" }}"
-    key: "{{ "{{" }} lookup(\"file\", ssh_key_path) {{ "}}" }}"
+    user: "{{ server_user }}"
+    key: "{{ lookup('file', ssh_key_path) }}"
 
 - name: Secure ssh
   template:
@@ -18,6 +18,6 @@
 
 - name: Install packages
   ansible.builtin.dnf:
-    name: "{{ "{{" }} item {{ "}}" }}"
+    name: "{{ item }}"
     state: present
-  loop: "{{ "{{" }} packages {{ "}}" }}"
+  loop: "{{ packages }}"

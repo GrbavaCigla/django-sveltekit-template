@@ -1,5 +1,5 @@
 server_user: admin
-ssh_key_path: "{{ "{{" }} lookup(\"env\", \"HOME\") {{ "}}" }}/.ssh/id_rsa.pub"
+ssh_key_path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa.pub"
 packages:
   - git
   - python3
